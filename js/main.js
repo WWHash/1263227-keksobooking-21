@@ -119,12 +119,8 @@ const toggleDisabled = function (collection, isDisabled) {
 
 const adFormDisabled = function (form) {
   if (form.classList.contains(`ad-form--disabled`)) {
-    toggleDisabled(fildsets, true);
+    toggleDisabled(fieldsets, true);
   }
-};
-
-const mapFiltersDisabled = function () {
-  toggleDisabled(selectedFilters, true);
 };
 
 const setDefaultAddress = function () {
@@ -166,18 +162,6 @@ const onMainPinClick = function (evt) {
 const onMapPinKeyEnter = function (evt) {
   if (evt.key === `Enter`) {
     activatePage();
-  }
-};
-
-const ofMainPinClick = function (evt) {
-  if (evt.button === 0) {
-    deactivatePage();
-  }
-};
-
-const ofMapPinKeyEnter = function (evt) {
-  if (evt.key === `Enter`) {
-    deactivatePage();
   }
 };
 
