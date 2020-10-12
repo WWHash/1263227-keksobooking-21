@@ -21,12 +21,15 @@ const NUMBER_OF_OFFERS = 8;
 const map = document.querySelector(`.map`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const mapPins = document.querySelector(`.map__pins`);
-const adForm = document.querySelector(`.ad-form`);
-const fieldsets = adForm.querySelectorAll(`.fieldset`);
 const mainPin = document.querySelector(`.map__pin--main`);
+const adForm = document.querySelector(`.ad-form`);
+const fieldsets = adForm.querySelectorAll(`fieldset`);
 const addressInput = adForm.querySelector(`[name = address]`);
 const capacityInput = adForm.querySelector(`[name = capacity]`);
 const roomsInput = adForm.querySelector(`[name= rooms]`);
+const mapFilters = document.querySelector(`.map__filters`);
+const selectedFilters = mapFilters.querySelectorAll(`select`);
+
 
 const getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -100,16 +103,28 @@ const drawPins = function (collection) {
   mapPins.appendChild(fragment);
 };
 
-let toggleDisabled = function (isDisabled) {
-  for (let i = 0; i < fieldsets.length; i++) {
-    fieldsets[i].disabled = isDisabled;
+const deletePins = function () {
+  let pins = document.querySelectorAll(`.map__pin`);
+  for (let i = 1; i < pins.length; i++) {
+    let pin = pins[i];
+    pin.remove();
   }
 };
 
-let adFormDisabled = function (form) {
-  if (form.classList.contains(`ad-form--disabled`)) {
-    toggleDisabled(true);
+const toggleDisabled = function (collection, isDisabled) {
+  for (let i = 0; i < collection.length; i++) {
+    collection[i].disabled = isDisabled;
   }
+};
+
+const adFormDisabled = function (form) {
+  if (form.classList.contains(`ad-form--disabled`)) {
+    toggleDisabled(fildsets, true);
+  }
+};
+
+const mapFiltersDisabled = function () {
+  toggleDisabled(selectedFilters, true);
 };
 
 const setDefaultAddress = function () {
@@ -125,14 +140,27 @@ const setAddress = function () {
 const activatePage = function () {
   adForm.classList.remove(`ad-form--disabled`);
   map.classList.remove(`map--faded`);
-  toggleDisabled(false);
+  toggleDisabled(fieldsets, false);
+  toggleDisabled(selectedFilters, false);
   setAddress();
   drawPins(offers);
   onFormSubmit();
 };
 
-const onMainPinClick = function () {
-  activatePage();
+const deactivatePage = function () {
+  adForm.classList.add(`ad-form--disabled`);
+  map.classList.add(`map--faded`);
+  toggleDisabled(fieldsets, true);
+  toggleDisabled(selectedFilters, true);
+  setDefaultAddress();
+  adFormDisabled(adForm);
+  deletePins();
+};
+
+const onMainPinClick = function (evt) {
+  if (evt.button === 0) {
+    activatePage();
+  }
 };
 
 const onMapPinKeyEnter = function (evt) {
@@ -141,9 +169,21 @@ const onMapPinKeyEnter = function (evt) {
   }
 };
 
+const ofMainPinClick = function (evt) {
+  if (evt.button === 0) {
+    deactivatePage();
+  }
+};
+
+const ofMapPinKeyEnter = function (evt) {
+  if (evt.key === `Enter`) {
+    deactivatePage();
+  }
+};
+
 const validateRooms = function () {
   if (roomsInput.value < capacityInput.value && capacityInput.value > 0 && roomsInput.value !== `100`) {
-    capacityInput.setCustomValidity(`Вам нужна квартира по больше`);
+    capacityInput.setCustomValidity(`Вам нужна квартира побольше`);
   } else if (roomsInput.value === `100` && capacityInput.value > 0) {
     capacityInput.setCustomValidity(`Эти аппартаменты не для гостей`);
   } else if (roomsInput.value !== `100` && capacityInput.value === `0`) {
@@ -160,6 +200,5 @@ const onFormSubmit = function () {
 adForm.addEventListener(`change`, onFormSubmit);
 mainPin.addEventListener(`mousedown`, onMainPinClick);
 mainPin.addEventListener(`keydown`, onMapPinKeyEnter);
-adFormDisabled(adForm);
 let offers = getOffers(NUMBER_OF_OFFERS);
-setDefaultAddress();
+deactivatePage();
