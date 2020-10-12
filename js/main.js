@@ -117,20 +117,22 @@ const toggleDisabled = function (collection, isDisabled) {
   }
 };
 
-const adFormDisabled = function (form) {
-  if (form.classList.contains(`ad-form--disabled`)) {
+const disableSendingForm = function () {
+  if (adForm.classList.contains(`ad-form--disabled`)) {
     toggleDisabled(fieldsets, true);
   }
 };
 
-const setDefaultAddress = function () {
+const setAddress = function (isDefault) {
   let coordinate = mainPin.getBoundingClientRect();
-  addressInput.value = `${Math.round(parseInt(mainPin.style.left, 10) + coordinate.width / 2)}, ${Math.round(parseInt(mainPin.style.top, 10) + coordinate.height / 2)}`;
-};
-
-const setAddress = function () {
-  let coordinate = mainPin.getBoundingClientRect();
-  addressInput.value = `${Math.round(parseInt(mainPin.style.left, 10) + coordinate.width / 2)}, ${Math.round(parseInt(mainPin.style.top, 10) + coordinate.height)}`;
+  let coordinateLeft = parseInt(mainPin.style.left, 10);
+  let coordinateTop = parseInt(mainPin.style.top, 10);
+  addressInput.value = `${Math.round(coordinateLeft + coordinate.width / 2)}, `;
+  if (isDefault) {
+    addressInput.value += `${Math.round(coordinateTop + coordinate.height / 2)}`;
+  } else {
+    addressInput.value += `${Math.round(coordinateTop + coordinate.height)}`;
+  }
 };
 
 const activatePage = function () {
@@ -140,7 +142,7 @@ const activatePage = function () {
   toggleDisabled(selectedFilters, false);
   setAddress();
   drawPins(offers);
-  onFormSubmit();
+  onFormEditChange();
 };
 
 const deactivatePage = function () {
@@ -148,8 +150,8 @@ const deactivatePage = function () {
   map.classList.add(`map--faded`);
   toggleDisabled(fieldsets, true);
   toggleDisabled(selectedFilters, true);
-  setDefaultAddress();
-  adFormDisabled(adForm);
+  setAddress(true);
+  disableSendingForm();
   deletePins();
 };
 
@@ -159,7 +161,7 @@ const onMainPinClick = function (evt) {
   }
 };
 
-const onMapPinKeyEnter = function (evt) {
+const onMainPinEnter = function (evt) {
   if (evt.key === `Enter`) {
     activatePage();
   }
@@ -177,12 +179,12 @@ const validateRooms = function () {
   }
 };
 
-const onFormSubmit = function () {
+const onFormEditChange = function () {
   validateRooms();
 };
 
-adForm.addEventListener(`change`, onFormSubmit);
+adForm.addEventListener(`change`, onFormEditChange);
 mainPin.addEventListener(`mousedown`, onMainPinClick);
-mainPin.addEventListener(`keydown`, onMapPinKeyEnter);
+mainPin.addEventListener(`keydown`, onMainPinEnter);
 let offers = getOffers(NUMBER_OF_OFFERS);
 deactivatePage();
