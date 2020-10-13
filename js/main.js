@@ -21,6 +21,15 @@ const NUMBER_OF_OFFERS = 8;
 const map = document.querySelector(`.map`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
 const mapPins = document.querySelector(`.map__pins`);
+const mainPin = document.querySelector(`.map__pin--main`);
+const adForm = document.querySelector(`.ad-form`);
+const fieldsets = adForm.querySelectorAll(`fieldset`);
+const addressInput = adForm.querySelector(`[name = address]`);
+const capacityInput = adForm.querySelector(`[name = capacity]`);
+const roomsInput = adForm.querySelector(`[name= rooms]`);
+const mapFilters = document.querySelector(`.map__filters`);
+const selectedFilters = mapFilters.querySelectorAll(`select`);
+
 
 const getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
@@ -77,8 +86,6 @@ const getOffers = function (count) {
   return offers;
 };
 
-map.classList.remove(`map--faded`);
-
 const renderPin = function (pin) {
   let pinElement = pinTemplate.cloneNode(true);
   pinElement.setAttribute(`style`, `left: ${pin.location.x - (PIN_WIDTH / 2)}px ; top: ${pin.location.y - PIN_HEIGHT}px`);
@@ -96,5 +103,88 @@ const drawPins = function (collection) {
   mapPins.appendChild(fragment);
 };
 
+const deletePins = function () {
+  let pins = document.querySelectorAll(`.map__pin`);
+  for (let i = 1; i < pins.length; i++) {
+    let pin = pins[i];
+    pin.remove();
+  }
+};
+
+const toggleDisabled = function (collection, isDisabled) {
+  for (let i = 0; i < collection.length; i++) {
+    collection[i].disabled = isDisabled;
+  }
+};
+
+const disableSendingForm = function () {
+  if (adForm.classList.contains(`ad-form--disabled`)) {
+    toggleDisabled(fieldsets, true);
+  }
+};
+
+const setAddress = function (isDefault) {
+  let coordinate = mainPin.getBoundingClientRect();
+  let coordinateLeft = parseInt(mainPin.style.left, 10);
+  let coordinateTop = parseInt(mainPin.style.top, 10);
+  addressInput.value = `${Math.round(coordinateLeft + coordinate.width / 2)}, `;
+  if (isDefault) {
+    addressInput.value += `${Math.round(coordinateTop + coordinate.height / 2)}`;
+  } else {
+    addressInput.value += `${Math.round(coordinateTop + coordinate.height)}`;
+  }
+};
+
+const activatePage = function () {
+  adForm.classList.remove(`ad-form--disabled`);
+  map.classList.remove(`map--faded`);
+  toggleDisabled(fieldsets, false);
+  toggleDisabled(selectedFilters, false);
+  setAddress();
+  drawPins(offers);
+  onFormEditChange();
+};
+
+const deactivatePage = function () {
+  adForm.classList.add(`ad-form--disabled`);
+  map.classList.add(`map--faded`);
+  toggleDisabled(fieldsets, true);
+  toggleDisabled(selectedFilters, true);
+  setAddress(true);
+  disableSendingForm();
+  deletePins();
+};
+
+const onMainPinClick = function (evt) {
+  if (evt.button === 0) {
+    activatePage();
+  }
+};
+
+const onMainPinEnter = function (evt) {
+  if (evt.key === `Enter`) {
+    activatePage();
+  }
+};
+
+const validateRooms = function () {
+  if (roomsInput.value < capacityInput.value && capacityInput.value > 0 && roomsInput.value !== `100`) {
+    capacityInput.setCustomValidity(`Вам нужна квартира побольше`);
+  } else if (roomsInput.value === `100` && capacityInput.value > 0) {
+    capacityInput.setCustomValidity(`Эти аппартаменты не для гостей`);
+  } else if (roomsInput.value !== `100` && capacityInput.value === `0`) {
+    capacityInput.setCustomValidity(`Выберите аппартаменты не для гостей`);
+  } else {
+    capacityInput.setCustomValidity(``);
+  }
+};
+
+const onFormEditChange = function () {
+  validateRooms();
+};
+
+adForm.addEventListener(`change`, onFormEditChange);
+mainPin.addEventListener(`mousedown`, onMainPinClick);
+mainPin.addEventListener(`keydown`, onMainPinEnter);
 let offers = getOffers(NUMBER_OF_OFFERS);
-drawPins(offers);
+deactivatePage();
