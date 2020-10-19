@@ -10,7 +10,8 @@
     let coordinateLeft = parseInt(mainPin.style.left, 10);
     let coordinateTop = parseInt(mainPin.style.top, 10);
     let x = Math.round(coordinateLeft + coordinate.width / 2);
-    let y = (isDefault) ? Math.round(coordinateTop + coordinate.height / 2) : Math.round(coordinateTop + coordinate.height);
+    let offsetTop = (isDefault) ? coordinate.height / 2 : coordinate.height;
+    let y = Math.round(coordinateTop + offsetTop);
     window.form.setAddress(x, y);
   };
 
@@ -46,16 +47,3 @@
   mainPin.addEventListener(`keydown`, onMainPinEnter);
   deactivatePage();
 })();
-
-
-
-
-const setAddress = function (isDefault) {
-  let coordinate = mainPin.getBoundingClientRect();
-  let coordinateLeft = parseInt(mainPin.style.left, 10);
-  let coordinateTop = parseInt(mainPin.style.top, 10);
-  let x = Math.round(coordinateLeft + coordinate.width / 2);
-  let offsetTop = (isDefault) ? coordinate.height / 2 : coordinate.height;
-  let y = Math.round(coordinateTop + offsetTop);
-  window.form.setAddress(x, y);
-};
