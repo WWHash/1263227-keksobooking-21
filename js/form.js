@@ -1,9 +1,9 @@
 "use strict";
 
 (function () {
-  const capacityInput = document.querySelector(`[name = capacity]`);
-  const roomsInput = document.querySelector(`[name= rooms]`);
   const adForm = document.querySelector(`.ad-form`);
+  const capacityInput = adForm.querySelector(`[name = capacity]`);
+  const roomsInput = adForm.querySelector(`[name= rooms]`);
   const fieldsets = adForm.querySelectorAll(`fieldset`);
   const addressInput = adForm.querySelector(`[name = address]`);
 
