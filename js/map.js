@@ -23,6 +23,7 @@
     setAddress();
     window.backend.load(function (offers) {
       window.util.toggleDisabled(selectedFilters, false);
+      window.util.toggleDisabled(inputsFilter, false);
       window.pin.drawPins(offers);
     }, window.backend.onError);
     window.form.activate();

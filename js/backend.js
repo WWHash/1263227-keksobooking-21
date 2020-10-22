@@ -1,7 +1,7 @@
 "use strict";
 
 (function () {
-  const URL_LOAD = `https://30.javascript.pages.academy/keksobooking/data`;
+  const URL_LOAD = `https://21.javascript.pages.academy/keksobooking/data`;
   const TIMEOUT_IN_MS = 10000;
 
   const executeRequest = function (method, url, data, onLoad, onError) {
