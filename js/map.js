@@ -3,7 +3,10 @@
 (function () {
   const mainPin = document.querySelector(`.map__pin--main`);
   const mapFilters = document.querySelector(`.map__filters`);
+  const inputsFilter = mapFilters.querySelectorAll(`input`);
   const selectedFilters = mapFilters.querySelectorAll(`select`);
+  const map = document.querySelector(`.map`);
+
 
   const setAddress = function (isDefault) {
     let coordinate = mainPin.getBoundingClientRect();
@@ -16,19 +19,26 @@
   };
 
   const activatePage = function () {
-    window.data.map.classList.remove(`map--faded`);
-    window.util.toggleDisabled(selectedFilters, false);
+    map.classList.remove(`map--faded`);
     setAddress();
-    window.pin.drawPins(window.data.offers);
+    window.backend.load(function (offers) {
+      window.util.toggleDisabled(selectedFilters, false);
+      window.pin.drawPins(offers);
+    }, window.backend.onError);
     window.form.activate();
+    mainPin.removeEventListener(`mousedown`, onMainPinClick);
+    mainPin.removeEventListener(`keydown`, onMainPinEnter);
   };
 
   const deactivatePage = function () {
-    window.data.map.classList.add(`map--faded`);
+    map.classList.add(`map--faded`);
     window.util.toggleDisabled(selectedFilters, true);
+    window.util.toggleDisabled(inputsFilter, true);
     setAddress(true);
     window.pin.deletePins();
     window.form.deactivate();
+    mainPin.addEventListener(`mousedown`, onMainPinClick);
+    mainPin.addEventListener(`keydown`, onMainPinEnter);
   };
 
   const onMainPinClick = function (evt) {
@@ -42,8 +52,5 @@
       activatePage();
     }
   };
-
-  mainPin.addEventListener(`mousedown`, onMainPinClick);
-  mainPin.addEventListener(`keydown`, onMainPinEnter);
   deactivatePage();
 })();
