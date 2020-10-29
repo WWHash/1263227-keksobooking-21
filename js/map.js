@@ -6,7 +6,7 @@
   const inputsFilter = mapFilters.querySelectorAll(`input`);
   const selectedFilters = mapFilters.querySelectorAll(`select`);
   const map = document.querySelector(`.map`);
-
+  let originalOffers = [];
 
   const setAddress = function (isDefault) {
     let coordinate = mainPin.getBoundingClientRect();
@@ -25,6 +25,7 @@
       window.util.toggleDisabled(selectedFilters, false);
       window.util.toggleDisabled(inputsFilter, false);
       window.pin.drawPins(offers);
+      originalOffers = offers;
     }, window.backend.onError);
     window.form.activate();
     mainPin.removeEventListener(`mousedown`, onMainPinClick);
@@ -54,4 +55,8 @@
     }
   };
   deactivatePage();
+
+  window.map = {
+    getOriginalOffers: () => originalOffers
+  };
 })();

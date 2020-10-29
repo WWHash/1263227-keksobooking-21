@@ -1,6 +1,7 @@
 "use strict";
 
 (function () {
+  const MAX_PIN_COUNT = 5;
   const PIN_WIDTH = 50;
   const PIN_HEIGHT = 70;
   const mapPins = document.querySelector(`.map__pins`);
@@ -16,8 +17,10 @@
   };
 
   const drawPins = function (collection) {
+    deletePins();
     let fragment = document.createDocumentFragment();
-    for (let i = 0; i < collection.length; i++) {
+    const takeNumber = Math.min(MAX_PIN_COUNT, collection.length);
+    for (let i = 0; i < takeNumber; i++) {
       fragment.appendChild(renderPin(collection[i]));
     }
     mapPins.appendChild(fragment);
