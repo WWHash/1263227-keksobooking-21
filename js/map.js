@@ -57,8 +57,6 @@
   deactivatePage();
 
   window.map = {
-    getOriginalOffers: function () {
-      return originalOffers;
-    }
+    getOriginalOffers: () => originalOffers
   };
 })();
