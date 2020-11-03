@@ -21,14 +21,14 @@
   };
 
   const getCardPhotos = function (photosElement, photos) {
+    const imgClone = photosElement.querySelector(`img`);
     if (photos && photos.length > 0) {
       photos.forEach(function (photo) {
-        let img = photosElement.querySelector(`img`).cloneNode(true);
-        photosElement.appendChild(img);
+        const img = imgClone.cloneNode(true);
         img.src = photo;
+        photosElement.appendChild(img);
       });
-      let images = photosElement.querySelectorAll(`img`);
-      images[0].remove();
+      imgClone.remove();
     } else {
       photosElement.classList.add(`hidden`);
     }
