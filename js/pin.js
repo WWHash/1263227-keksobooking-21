@@ -36,6 +36,7 @@
 
   window.pin = {
     drawPins,
-    deletePins
+    deletePins,
+    mapPins
   };
 })();
