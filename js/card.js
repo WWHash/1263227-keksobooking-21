@@ -101,7 +101,6 @@
         closeCard();
       }
     });
-    document.addEventListener(`keydown`, onPopupEscPress);
   };
 
   const closeCard = function () {
@@ -117,6 +116,8 @@
       closeCard();
     }
   };
+
+  document.addEventListener(`keydown`, onPopupEscPress);
 
   window.card = {
     renderCard
