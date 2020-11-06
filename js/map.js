@@ -1,11 +1,17 @@
 "use strict";
 
 (function () {
+  const MIN_TOP = 130;
+  const MAX_TOP = 630;
   const mainPin = document.querySelector(`.map__pin--main`);
   const mapFilters = document.querySelector(`.map__filters`);
   const inputsFilter = mapFilters.querySelectorAll(`input`);
   const selectedFilters = mapFilters.querySelectorAll(`select`);
   const map = document.querySelector(`.map`);
+  const minPositionMainPinTop = 0 - mainPin.offsetWidth / 2;
+  const maxPositionMainPinTop = map.offsetWidth - mainPin.offsetWidth / 2;
+  const minPositionMainPinLeft = MIN_TOP - mainPin.offsetHeight;
+  const maxPositionMainPinLeft = MAX_TOP - mainPin.offsetHeight;
   let originalOffers = [];
 
   const setAddress = function (isDefault) {
@@ -54,6 +60,53 @@
       activatePage();
     }
   };
+
+  mainPin.addEventListener(`mousedown`, function (evt) {
+    evt.preventDefault();
+
+    let startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    const onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      let shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      const newTop = mainPin.offsetTop - shift.y;
+      const newLeft = mainPin.offsetLeft - shift.x;
+
+      if(newLeft >= minPositionMainPinTop
+        && newLeft <= maxPositionMainPinTop
+        && newTop >= minPositionMainPinLeft
+        && newTop <= maxPositionMainPinLeft) {
+        mainPin.style.top = `${newTop}px`;
+        mainPin.style.left = `${newLeft}px`;
+        setAddress();
+      }
+    };
+
+    const onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener(`mousemove`, onMouseMove);
+      document.removeEventListener(`mouseup`, onMouseUp);
+    };
+
+
+    document.addEventListener(`mousemove`, onMouseMove);
+    document.addEventListener(`mouseup`, onMouseUp);
+  });
+
   deactivatePage();
 
   window.map = {

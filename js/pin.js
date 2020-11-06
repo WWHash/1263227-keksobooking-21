@@ -15,6 +15,7 @@
     img.alt = pin.offer.title;
 
     pinElement.addEventListener(`click`, function () {
+      pinElement.classList.add(`map__pin--active`);
       window.card.renderCard(pin);
     });
 
@@ -49,6 +50,8 @@
   window.pin = {
     drawPins,
     deletePins,
-    mapPins
+    mapPins,
+    getPinWidth: () => PIN_WIDTH,
+    getPinElement: () => pinElement
   };
 })();
