@@ -26,7 +26,6 @@
       window.util.toggleDisabled(inputsFilter, false);
       window.pin.drawPins(offers);
       originalOffers = offers;
-      window.card.renderCard(offers[0]);
     }, window.backend.onError);
     window.form.activate();
     mainPin.removeEventListener(`mousedown`, onMainPinClick);

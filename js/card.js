@@ -16,6 +16,7 @@
         break;
       case `palace`:
         housingType = `Дворец`;
+        break;
     }
     return housingType;
   };
@@ -88,11 +89,35 @@
   };
 
   const renderCard = function (cardData) {
+    closeCard();
     let card = createCard(cardData);
     let map = window.map.getMapElement();
     const mapFilterContainer = map.querySelector(`.map__filters-container`);
     map.insertBefore(card, mapFilterContainer);
+
+    const closeBtn = card.querySelector(`.popup__close`);
+    closeBtn.addEventListener(`click`, function (evt) {
+      if (evt.button === 0) {
+        closeCard();
+      }
+    });
   };
+
+  const closeCard = function () {
+    const card = document.querySelector(`.map__card`);
+    if (card) {
+      card.remove();
+    }
+  };
+
+  const onPopupEscPress = function (evt) {
+    if (evt.key === `Escape`) {
+      evt.preventDefault();
+      closeCard();
+    }
+  };
+
+  document.addEventListener(`keydown`, onPopupEscPress);
 
   window.card = {
     renderCard

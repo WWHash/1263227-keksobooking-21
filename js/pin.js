@@ -13,6 +13,17 @@
     const img = pinElement.querySelector(`img`);
     img.src = pin.author.avatar;
     img.alt = pin.offer.title;
+
+    pinElement.addEventListener(`click`, function () {
+      window.card.renderCard(pin);
+    });
+
+    pinElement.addEventListener(`keydown`, function (evt) {
+      if (evt.key === `Enter`) {
+        window.card.renderCard(pin);
+      }
+    });
+
     return pinElement;
   };
 
@@ -33,6 +44,7 @@
       pin.remove();
     }
   };
+
 
   window.pin = {
     drawPins,

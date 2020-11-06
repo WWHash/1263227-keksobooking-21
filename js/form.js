@@ -6,6 +6,11 @@
   const roomsInput = adForm.querySelector(`[name= rooms]`);
   const fieldsets = adForm.querySelectorAll(`fieldset`);
   const addressInput = adForm.querySelector(`[name = address]`);
+  const selectType = adForm.querySelector(`#type`);
+  const inputPrice = adForm.querySelector(`#price`);
+  const selectCheckIn = adForm.querySelector(`#timein`);
+  const selectCheckOut = adForm.querySelector(`#timeout`);
+
 
   const setAddress = function (x, y) {
     addressInput.value = `${x}, ${y}`;
@@ -34,8 +39,36 @@
     }
   };
 
-  const onFormEditChange = function () {
+  const synchronizePrice = function () {
+    let minPrice = 0;
+    switch (selectType.value) {
+      case `flat`:
+        minPrice = 1000;
+        break;
+      case `bungalo`:
+        minPrice = 0;
+        break;
+      case `house`:
+        minPrice = 5000;
+        break;
+      case `palace`:
+        minPrice = 10000;
+        break;
+    }
+    inputPrice.setAttribute(`placeholder`, minPrice);
+    inputPrice.setAttribute(`min`, minPrice);
+  };
+
+  const onFormEditChange = function (evt) {
     validateRooms();
+    synchronizePrice();
+    if (evt && evt.target === selectCheckIn) {
+      selectCheckOut.value = selectCheckIn.value;
+    }
+
+    if (evt && evt.target === selectCheckOut) {
+      selectCheckIn.value = selectCheckOut.value;
+    }
   };
 
   adForm.addEventListener(`change`, onFormEditChange);
