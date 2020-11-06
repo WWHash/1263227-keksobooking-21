@@ -85,7 +85,7 @@
       const newTop = mainPin.offsetTop - shift.y;
       const newLeft = mainPin.offsetLeft - shift.x;
 
-      if(newLeft >= minPositionMainPinTop
+      if (newLeft >= minPositionMainPinTop
         && newLeft <= maxPositionMainPinTop
         && newTop >= minPositionMainPinLeft
         && newTop <= maxPositionMainPinLeft) {

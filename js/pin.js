@@ -52,6 +52,5 @@
     deletePins,
     mapPins,
     getPinWidth: () => PIN_WIDTH,
-    getPinElement: () => pinElement
   };
 })();
