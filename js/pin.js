@@ -16,6 +16,7 @@
 
     pinElement.addEventListener(`click`, function () {
       window.card.renderCard(pin);
+      pinElement.classList.add(`map__pin--active`);
     });
 
     pinElement.addEventListener(`keydown`, function (evt) {
@@ -49,6 +50,6 @@
   window.pin = {
     drawPins,
     deletePins,
-    mapPins
+    mapPins,
   };
 })();

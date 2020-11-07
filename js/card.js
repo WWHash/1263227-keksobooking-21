@@ -105,7 +105,9 @@
 
   const closeCard = function () {
     const card = document.querySelector(`.map__card`);
+    const pinActive = document.querySelector(`.map__pin--active`);
     if (card) {
+      pinActive.classList.remove(`map__pin--active`);
       card.remove();
     }
   };
