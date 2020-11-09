@@ -10,6 +10,7 @@
   const inputPrice = adForm.querySelector(`#price`);
   const selectCheckIn = adForm.querySelector(`#timein`);
   const selectCheckOut = adForm.querySelector(`#timeout`);
+  const resetButton = adForm.querySelector(`.ad-form__reset`);
 
 
   const setAddress = function (x, y) {
@@ -25,6 +26,7 @@
   const deactivateForm = function () {
     adForm.classList.add(`ad-form--disabled`);
     window.util.toggleDisabled(fieldsets, true);
+    adForm.reset();
   };
 
   const validateRooms = function () {
@@ -70,6 +72,24 @@
       selectCheckIn.value = selectCheckOut.value;
     }
   };
+
+  adForm.addEventListener(`submit`, function (evt) {
+    const formData = new FormData(adForm);
+    evt.preventDefault();
+    window.backend.save(formData, function () {
+      window.map.deactivatePage();
+      window.util.showMessage(`success`);
+    }, function () {
+      window.util.showMessage(`error`);
+    });
+  });
+
+  resetButton.addEventListener(`click`, function (evt) {
+    if (evt.button === 0) {
+      evt.preventDefault();
+      window.map.deactivatePage();
+    }
+  });
 
   adForm.addEventListener(`change`, onFormEditChange);
 

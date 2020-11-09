@@ -12,6 +12,8 @@
   const maxPositionMainPinTop = map.offsetWidth - mainPin.offsetWidth / 2;
   const minPositionMainPinLeft = MIN_TOP - mainPin.offsetHeight;
   const maxPositionMainPinLeft = MAX_TOP - mainPin.offsetHeight;
+  const mainPinDefaultX = mainPin.offsetLeft;
+  const mainPinDefaultY = mainPin.offsetTop;
   let originalOffers = [];
 
   const setAddress = function (isDefault) {
@@ -42,9 +44,11 @@
     map.classList.add(`map--faded`);
     window.util.toggleDisabled(selectedFilters, true);
     window.util.toggleDisabled(inputsFilter, true);
-    setAddress(true);
     window.pin.deletePins();
     window.form.deactivate();
+    mainPin.style.top = `${mainPinDefaultY}px`;
+    mainPin.style.left = `${mainPinDefaultX}px`;
+    setAddress(true);
     mainPin.addEventListener(`mousedown`, onMainPinClick);
     mainPin.addEventListener(`keydown`, onMainPinEnter);
   };
@@ -111,6 +115,7 @@
 
   window.map = {
     getOriginalOffers: () => originalOffers,
-    getMapElement: () => map
+    getMapElement: () => map,
+    deactivatePage
   };
 })();
