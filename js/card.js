@@ -122,7 +122,8 @@
   document.addEventListener(`keydown`, onPopupEscPress);
 
   window.card = {
-    renderCard
+    renderCard,
+    closeCard
   };
 
 })();
