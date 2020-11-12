@@ -37,13 +37,17 @@
     return true;
   };
 
+  const compareValues = function (filterValue, offerValue) {
+    return `${offerValue}` === filterValue || filterValue === `any`;
+  };
+
   const onFilterFormChange = function () {
     const originalOffers = window.map.getOriginalOffers();
     const filteredOffers = [];
     for (const offer of originalOffers) {
-      if ((offer.offer.type === filterType.value || filterType.value === `any`)
-        && (`${offer.offer.rooms}` === filterRooms.value || filterRooms.value === `any`)
-        && (`${offer.offer.guests}` === filterGuests.value || filterGuests.value === `any`)
+      if (compareValues(filterType.value, offer.offer.type)
+        && compareValues(filterRooms.value, offer.offer.rooms)
+        && compareValues(filterGuests.value, offer.offer.guests)
         && comparePrice(filterPrice.value, offer.offer.price)
         && compareInput(offer.offer.features)) {
         filteredOffers.push(offer);
