@@ -12,7 +12,7 @@ module.exports = {
     "./js/card.js"
   ],
   output: {
-    filename: "./js/bundle.js",
+    filename: "bundle.js",
     path: path.resolve(__dirname),
     iife: true
   },
