@@ -1,19 +1,28 @@
 "use strict";
 
+const HIDDEN = `hidden`;
+
+const HousingType = {
+  FLAT: `Квартира`,
+  BUNGALO: `Бунгало`,
+  HOUSE: `Дом`,
+  PALACE: `Дворец`
+};
+
 const definitionType = function (type) {
   let housingType;
   switch (type) {
-    case `flat`:
-      housingType = `Квартира`;
+    case window.util.OffersType.FLAT:
+      housingType = HousingType.FLAT;
       break;
-    case `bungalo`:
-      housingType = `Бунгало`;
+    case window.util.OffersType.BUNGALO:
+      housingType = HousingType.BUNGALO;
       break;
-    case `house`:
-      housingType = `Дом`;
+    case window.util.OffersType.HOUSE:
+      housingType = HousingType.HOUSE;
       break;
-    case `palace`:
-      housingType = `Дворец`;
+    case window.util.OffersType.PALACE:
+      housingType = HousingType.PALACE;
       break;
   }
   return housingType;
@@ -29,17 +38,17 @@ const getCardPhotos = function (photosElement, photos) {
     });
     imgClone.remove();
   } else {
-    photosElement.classList.add(`hidden`);
+    photosElement.classList.add(HIDDEN);
   }
 };
 
 const getFeaturesList = function (featureElement, features) {
   if (features && features.length > 0) {
     features.forEach(function (feature) {
-      featureElement.querySelector(`.popup__feature--${feature}`).classList.remove(`hidden`);
+      featureElement.querySelector(`.popup__feature--${feature}`).classList.remove(HIDDEN);
     });
   } else {
-    featureElement.classList.add(`hidden`);
+    featureElement.classList.add(HIDDEN);
   }
 };
 
@@ -47,7 +56,7 @@ const fillTextContent = function (element, textContent) {
   if (textContent) {
     element.textContent = textContent;
   } else {
-    element.classList.add(`hidden`);
+    element.classList.add(HIDDEN);
   }
 };
 
@@ -55,23 +64,23 @@ const fillAvatarSrc = function (element, src) {
   if (src) {
     element.src = src;
   } else {
-    element.classList.add(`hidden`);
+    element.classList.add(HIDDEN);
   }
 };
 
 const createCard = function (cardData) {
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
-  let card = cardTemplate.cloneNode(true);
-  let cardTitle = card.querySelector(`.popup__title`);
-  let cardAddress = card.querySelector(`.popup__text--address`);
-  let cardPrice = card.querySelector(`.popup__text--price`);
-  let cardType = card.querySelector(`.popup__type`);
-  let cardCapacity = card.querySelector(`.popup__text--capacity`);
-  let cardTime = card.querySelector(`.popup__text--time`);
-  let cardFeatures = card.querySelector(`.popup__features`);
-  let cardDescription = card.querySelector(`.popup__description`);
-  let cardAvatar = card.querySelector(`.popup__avatar`);
-  let cardPhotos = card.querySelector(`.popup__photos`);
+  const card = cardTemplate.cloneNode(true);
+  const cardTitle = card.querySelector(`.popup__title`);
+  const cardAddress = card.querySelector(`.popup__text--address`);
+  const cardPrice = card.querySelector(`.popup__text--price`);
+  const cardType = card.querySelector(`.popup__type`);
+  const cardCapacity = card.querySelector(`.popup__text--capacity`);
+  const cardTime = card.querySelector(`.popup__text--time`);
+  const cardFeatures = card.querySelector(`.popup__features`);
+  const cardDescription = card.querySelector(`.popup__description`);
+  const cardAvatar = card.querySelector(`.popup__avatar`);
+  const cardPhotos = card.querySelector(`.popup__photos`);
 
   fillTextContent(cardTitle, cardData.offer.title);
   fillTextContent(cardAddress, cardData.offer.address);
@@ -88,8 +97,8 @@ const createCard = function (cardData) {
 
 const renderCard = function (cardData) {
   closeCard();
-  let card = createCard(cardData);
-  let map = window.map.getMapElement();
+  const card = createCard(cardData);
+  const map = window.map.getMapElement();
   const mapFilterContainer = map.querySelector(`.map__filters-container`);
   map.insertBefore(card, mapFilterContainer);
 
@@ -103,8 +112,8 @@ const renderCard = function (cardData) {
 
 const closeCard = function () {
   const card = document.querySelector(`.map__card`);
-  const pinActive = document.querySelector(`.map__pin--active`);
   if (card) {
+    const pinActive = document.querySelector(`.map__pin--active`);
     pinActive.classList.remove(`map__pin--active`);
     card.remove();
   }

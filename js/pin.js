@@ -7,7 +7,7 @@ const mapPins = document.querySelector(`.map__pins`);
 
 const renderPin = function (pin) {
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-  let pinElement = pinTemplate.cloneNode(true);
+  const pinElement = pinTemplate.cloneNode(true);
   pinElement.setAttribute(`style`, `left: ${pin.location.x - (PIN_WIDTH / 2)}px ; top: ${pin.location.y - PIN_HEIGHT}px`);
   const img = pinElement.querySelector(`img`);
   img.src = pin.author.avatar;
@@ -29,7 +29,7 @@ const renderPin = function (pin) {
 
 const drawPins = function (collection) {
   deletePins();
-  let fragment = document.createDocumentFragment();
+  const fragment = document.createDocumentFragment();
   const takeNumber = Math.min(MAX_PIN_COUNT, collection.length);
   for (let i = 0; i < takeNumber; i++) {
     fragment.appendChild(renderPin(collection[i]));
@@ -38,9 +38,9 @@ const drawPins = function (collection) {
 };
 
 const deletePins = function () {
-  let pins = document.querySelectorAll(`.map__pin`);
+  const pins = document.querySelectorAll(`.map__pin`);
   for (let i = 1; i < pins.length; i++) {
-    let pin = pins[i];
+    const pin = pins[i];
     pin.remove();
   }
 };
@@ -48,6 +48,5 @@ const deletePins = function () {
 
 window.pin = {
   drawPins,
-  deletePins,
-  mapPins,
+  deletePins
 };

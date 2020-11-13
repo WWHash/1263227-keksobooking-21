@@ -2,6 +2,8 @@
 
 const MIN_TOP = 130;
 const MAX_TOP = 630;
+const MAP_FADED = `map--faded`;
+
 const mainPin = document.querySelector(`.map__pin--main`);
 const mapFilters = document.querySelector(`.map__filters`);
 const inputsFilter = mapFilters.querySelectorAll(`input`);
@@ -16,17 +18,17 @@ const mainPinDefaultY = mainPin.offsetTop;
 let originalOffers = [];
 
 const setAddress = function (isDefault) {
-  let coordinate = mainPin.getBoundingClientRect();
-  let coordinateLeft = parseInt(mainPin.style.left, 10);
-  let coordinateTop = parseInt(mainPin.style.top, 10);
-  let x = Math.round(coordinateLeft + coordinate.width / 2);
-  let offsetTop = (isDefault) ? coordinate.height / 2 : coordinate.height;
-  let y = Math.round(coordinateTop + offsetTop);
+  const coordinate = mainPin.getBoundingClientRect();
+  const coordinateLeft = parseInt(mainPin.style.left, 10);
+  const coordinateTop = parseInt(mainPin.style.top, 10);
+  const x = Math.round(coordinateLeft + coordinate.width / 2);
+  const offsetTop = (isDefault) ? coordinate.height / 2 : coordinate.height;
+  const y = Math.round(coordinateTop + offsetTop);
   window.form.setAddress(x, y);
 };
 
 const activatePage = function () {
-  map.classList.remove(`map--faded`);
+  map.classList.remove(MAP_FADED);
   setAddress();
   window.backend.load(function (offers) {
     window.util.toggleDisabled(selectedFilters, false);
@@ -40,7 +42,7 @@ const activatePage = function () {
 };
 
 const deactivatePage = function () {
-  map.classList.add(`map--faded`);
+  map.classList.add(MAP_FADED);
   window.util.toggleDisabled(selectedFilters, true);
   window.util.toggleDisabled(inputsFilter, true);
   window.pin.deletePins();
@@ -75,7 +77,7 @@ mainPin.addEventListener(`mousedown`, function (evt) {
   const onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
 
-    let shift = {
+    const shift = {
       x: startCoords.x - moveEvt.clientX,
       y: startCoords.y - moveEvt.clientY
     };
@@ -104,7 +106,6 @@ mainPin.addEventListener(`mousedown`, function (evt) {
     document.removeEventListener(`mousemove`, onMouseMove);
     document.removeEventListener(`mouseup`, onMouseUp);
   };
-
 
   document.addEventListener(`mousemove`, onMouseMove);
   document.addEventListener(`mouseup`, onMouseUp);

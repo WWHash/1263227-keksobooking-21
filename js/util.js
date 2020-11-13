@@ -1,23 +1,10 @@
 "use strict";
 
-const getRandomNumber = function (min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-};
-
-let getRandomElement = function (arr) {
-  let rand = Math.floor(Math.random() * arr.length);
-  return arr[rand];
-};
-
-const getRandomElements = function (arr) {
-  let newArray = [];
-  for (let i = 0; i < getRandomNumber(0, arr.length); i++) {
-    let randomElement = getRandomElement(arr);
-    if (!newArray.includes(randomElement)) {
-      newArray.push(randomElement);
-    }
-  }
-  return newArray;
+const OffersType = {
+  FLAT: `flat`,
+  BUNGALO: `bungalo`,
+  HOUSE: `house`,
+  PALACE: `palace`
 };
 
 const toggleDisabled = function (collection, isDisabled) {
@@ -43,13 +30,10 @@ const showMessage = function (selector) {
       message.remove();
     }
   });
-
 };
 
 window.util = {
-  getRandomElement,
-  getRandomElements,
-  getRandomNumber,
   toggleDisabled,
-  showMessage
+  showMessage,
+  OffersType
 };

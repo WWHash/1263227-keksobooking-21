@@ -1,18 +1,23 @@
 "use strict";
 
+const STATUS_CODE_OK = 200;
+const TIMEOUT_IN_MS = 10000;
+const Method = {
+  POST: `POST`,
+  GET: `GET`
+};
 const URL_LOAD = `https://21.javascript.pages.academy/keksobooking/data`;
 const URL_UP_LOAD = `https://30.javascript.pages.academy/keksobooking`;
-const TIMEOUT_IN_MS = 10000;
 
 const executeRequest = function (method, url, data, onLoad, onError) {
-  let xhr = new XMLHttpRequest();
-  if (method === `GET`) {
+  const xhr = new XMLHttpRequest();
+  if (method === Method.GET) {
     xhr.responseType = `json`;
   }
 
 
   xhr.addEventListener(`load`, function () {
-    if (xhr.status === 200) {
+    if (xhr.status === STATUS_CODE_OK) {
       onLoad(xhr.response);
     } else {
       onError(`Статус ответа: ${xhr.status} + ${xhr.statusText}`);
@@ -33,11 +38,11 @@ const executeRequest = function (method, url, data, onLoad, onError) {
 };
 
 const load = function (onLoad, onError) {
-  executeRequest(`GET`, URL_LOAD, null, onLoad, onError);
+  executeRequest(Method.GET, URL_LOAD, null, onLoad, onError);
 };
 
 const save = function (data, onLoad, onError) {
-  executeRequest(`POST`, URL_UP_LOAD, data, onLoad, onError);
+  executeRequest(Method.POST, URL_UP_LOAD, data, onLoad, onError);
 };
 
 const onError = function (errorMessage) {

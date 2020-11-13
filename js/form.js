@@ -1,5 +1,15 @@
 "use strict";
 
+const CAPACITY_MIN = `0`;
+const ROOMS_MAX = `100`;
+
+const BuildMinPrice = {
+  BUNGALO: `0`,
+  FLAT: `1000`,
+  HOUSE: `5000`,
+  PALACE: `10000`
+};
+
 const adForm = document.querySelector(`.ad-form`);
 const capacityInput = adForm.querySelector(`[name = capacity]`);
 const roomsInput = adForm.querySelector(`[name= rooms]`);
@@ -29,11 +39,11 @@ const deactivateForm = function () {
 };
 
 const validateRooms = function () {
-  if (roomsInput.value < capacityInput.value && capacityInput.value > 0 && roomsInput.value !== `100`) {
+  if (roomsInput.value < capacityInput.value && capacityInput.value > CAPACITY_MIN && roomsInput.value !== ROOMS_MAX) {
     capacityInput.setCustomValidity(`Вам нужна квартира побольше`);
-  } else if (roomsInput.value === `100` && capacityInput.value > 0) {
+  } else if (roomsInput.value === ROOMS_MAX && capacityInput.value > CAPACITY_MIN) {
     capacityInput.setCustomValidity(`Эти аппартаменты не для гостей`);
-  } else if (roomsInput.value !== `100` && capacityInput.value === `0`) {
+  } else if (roomsInput.value !== CAPACITY_MIN && capacityInput.value === CAPACITY_MIN) {
     capacityInput.setCustomValidity(`Выберите аппартаменты не для гостей`);
   } else {
     capacityInput.setCustomValidity(``);
@@ -43,17 +53,17 @@ const validateRooms = function () {
 const synchronizePrice = function () {
   let minPrice = 0;
   switch (selectType.value) {
-    case `flat`:
-      minPrice = 1000;
+    case window.util.OffersType.FLAT:
+      minPrice = BuildMinPrice.FLAT;
       break;
-    case `bungalo`:
-      minPrice = 0;
+    case window.util.OffersType.BUNGALO:
+      minPrice = BuildMinPrice.BUNGALO;
       break;
-    case `house`:
-      minPrice = 5000;
+    case window.util.OffersType.HOUSE:
+      minPrice = BuildMinPrice.HOUSE;
       break;
-    case `palace`:
-      minPrice = 10000;
+    case window.util.OffersType.PALACE:
+      minPrice = BuildMinPrice.PALACE;
       break;
   }
   inputPrice.setAttribute(`placeholder`, minPrice);
