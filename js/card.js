@@ -96,21 +96,21 @@ const createCard = (cardData) => {
 };
 
 const render = (cardData) => {
-  close();
+  closeCard();
   const card = createCard(cardData);
   const map = window.map.getElement();
   const mapFilterContainer = map.querySelector(`.map__filters-container`);
   map.insertBefore(card, mapFilterContainer);
 
-  const closeBtn = card.querySelector(`.popup__close`);
-  closeBtn.addEventListener(`click`, (evt) => {
+  const closeCardBtn = card.querySelector(`.popup__closeCard`);
+  closeCardBtn.addEventListener(`click`, (evt) => {
     if (evt.button === 0) {
-      close();
+      closeCard();
     }
   });
 };
 
-const close = () => {
+const closeCard = () => {
   const card = document.querySelector(`.map__card`);
   if (card) {
     const pinActive = document.querySelector(`.map__pin--active`);
@@ -122,7 +122,7 @@ const close = () => {
 const onPopupEscPress = (evt) => {
   if (evt.key === `Escape`) {
     evt.preventDefault();
-    close();
+    closeCard();
   }
 };
 
@@ -130,5 +130,5 @@ document.addEventListener(`keydown`, onPopupEscPress);
 
 window.card = {
   render,
-  close
+  close: closeCard
 };
