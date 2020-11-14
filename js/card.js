@@ -102,7 +102,7 @@ const render = (cardData) => {
   const mapFilterContainer = map.querySelector(`.map__filters-container`);
   map.insertBefore(card, mapFilterContainer);
 
-  const closeCardBtn = card.querySelector(`.popup__closeCard`);
+  const closeCardBtn = card.querySelector(`.popup__close`);
   closeCardBtn.addEventListener(`click`, (evt) => {
     if (evt.button === 0) {
       closeCard();
