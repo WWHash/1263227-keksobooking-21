@@ -22,23 +22,23 @@ const selectCheckOut = adForm.querySelector(`#timeout`);
 const resetButton = adForm.querySelector(`.ad-form__reset`);
 
 
-const setAddress = function (x, y) {
+const setAddress = (x, y) => {
   addressInput.value = `${x}, ${y}`;
 };
 
-const activateForm = function () {
+const activateForm = () => {
   adForm.classList.remove(`ad-form--disabled`);
   window.util.toggleDisabled(fieldsets, false);
   onFormEditChange();
 };
 
-const deactivateForm = function () {
+const deactivateForm = () => {
   adForm.classList.add(`ad-form--disabled`);
   window.util.toggleDisabled(fieldsets, true);
   adForm.reset();
 };
 
-const validateRooms = function () {
+const validateRooms = () => {
   if (roomsInput.value < capacityInput.value && capacityInput.value > CAPACITY_MIN && roomsInput.value !== ROOMS_MAX) {
     capacityInput.setCustomValidity(`Вам нужна квартира побольше`);
   } else if (roomsInput.value === ROOMS_MAX && capacityInput.value > CAPACITY_MIN) {
@@ -50,7 +50,7 @@ const validateRooms = function () {
   }
 };
 
-const synchronizePrice = function () {
+const synchronizePrice = () => {
   let minPrice = 0;
   switch (selectType.value) {
     case window.util.OffersType.FLAT:
@@ -70,7 +70,7 @@ const synchronizePrice = function () {
   inputPrice.setAttribute(`min`, minPrice);
 };
 
-const onFormEditChange = function (evt) {
+const onFormEditChange = (evt) => {
   validateRooms();
   synchronizePrice();
   if (evt && evt.target === selectCheckIn) {
@@ -82,18 +82,18 @@ const onFormEditChange = function (evt) {
   }
 };
 
-adForm.addEventListener(`submit`, function (evt) {
+adForm.addEventListener(`submit`, (evt) => {
   const formData = new FormData(adForm);
   evt.preventDefault();
-  window.backend.save(formData, function () {
+  window.backend.save(formData, () => {
     window.map.deactivatePage();
     window.util.showMessage(`success`);
-  }, function () {
+  }, () => {
     window.util.showMessage(`error`);
   });
 });
 
-resetButton.addEventListener(`click`, function (evt) {
+resetButton.addEventListener(`click`, (evt) => {
   if (evt.button === 0) {
     evt.preventDefault();
     window.map.deactivatePage();

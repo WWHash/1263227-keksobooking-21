@@ -9,15 +9,15 @@ const mapFilters = document.querySelector(`.map__filters`);
 const inputsFilter = mapFilters.querySelectorAll(`input`);
 const selectedFilters = mapFilters.querySelectorAll(`select`);
 const map = document.querySelector(`.map`);
-const minPositionMainPinTop = 0 - mainPin.offsetWidth / 2;
-const maxPositionMainPinTop = map.offsetWidth - mainPin.offsetWidth / 2;
-const minPositionMainPinLeft = MIN_TOP - mainPin.offsetHeight;
-const maxPositionMainPinLeft = MAX_TOP - mainPin.offsetHeight;
+const minPositionMainPinLeft = Math.floor(0 - mainPin.offsetWidth / 2);
+const maxPositionMainPinLeft = map.offsetWidth - mainPin.offsetWidth / 2;
+const minPositionMainPinTop = MIN_TOP - mainPin.offsetHeight;
+const maxPositionMainPinTop = MAX_TOP - mainPin.offsetHeight;
 const mainPinDefaultX = mainPin.offsetLeft;
 const mainPinDefaultY = mainPin.offsetTop;
 let originalOffers = [];
 
-const setAddress = function (isDefault) {
+const setAddress = (isDefault) => {
   const coordinate = mainPin.getBoundingClientRect();
   const coordinateLeft = parseInt(mainPin.style.left, 10);
   const coordinateTop = parseInt(mainPin.style.top, 10);
@@ -27,10 +27,10 @@ const setAddress = function (isDefault) {
   window.form.setAddress(x, y);
 };
 
-const activatePage = function () {
+const activatePage = () => {
   map.classList.remove(MAP_FADED);
   setAddress();
-  window.backend.load(function (offers) {
+  window.backend.load((offers) => {
     window.util.toggleDisabled(selectedFilters, false);
     window.util.toggleDisabled(inputsFilter, false);
     window.pin.drawPins(offers);
@@ -41,7 +41,7 @@ const activatePage = function () {
   mainPin.removeEventListener(`keydown`, onMainPinEnter);
 };
 
-const deactivatePage = function () {
+const deactivatePage = () => {
   map.classList.add(MAP_FADED);
   window.util.toggleDisabled(selectedFilters, true);
   window.util.toggleDisabled(inputsFilter, true);
@@ -54,19 +54,19 @@ const deactivatePage = function () {
   mainPin.addEventListener(`keydown`, onMainPinEnter);
 };
 
-const onMainPinClick = function (evt) {
+const onMainPinClick = (evt) => {
   if (evt.button === 0) {
     activatePage();
   }
 };
 
-const onMainPinEnter = function (evt) {
+const onMainPinEnter = (evt) => {
   if (evt.key === `Enter`) {
     activatePage();
   }
 };
 
-mainPin.addEventListener(`mousedown`, function (evt) {
+mainPin.addEventListener(`mousedown`, (evt) => {
   evt.preventDefault();
 
   let startCoords = {
@@ -74,7 +74,7 @@ mainPin.addEventListener(`mousedown`, function (evt) {
     y: evt.clientY
   };
 
-  const onMouseMove = function (moveEvt) {
+  const onMouseMove = (moveEvt) => {
     moveEvt.preventDefault();
 
     const shift = {
@@ -90,17 +90,17 @@ mainPin.addEventListener(`mousedown`, function (evt) {
     const newTop = mainPin.offsetTop - shift.y;
     const newLeft = mainPin.offsetLeft - shift.x;
 
-    if (newLeft >= minPositionMainPinTop
-      && newLeft <= maxPositionMainPinTop
-      && newTop >= minPositionMainPinLeft
-      && newTop <= maxPositionMainPinLeft) {
+    if (newLeft >= minPositionMainPinLeft
+      && newLeft <= maxPositionMainPinLeft
+      && newTop >= minPositionMainPinTop
+      && newTop <= maxPositionMainPinTop) {
       mainPin.style.top = `${newTop}px`;
       mainPin.style.left = `${newLeft}px`;
       setAddress();
     }
   };
 
-  const onMouseUp = function (upEvt) {
+  const onMouseUp = (upEvt) => {
     upEvt.preventDefault();
 
     document.removeEventListener(`mousemove`, onMouseMove);
@@ -115,6 +115,6 @@ deactivatePage();
 
 window.map = {
   getOriginalOffers: () => originalOffers,
-  getMapElement: () => map,
+  getElement: () => map,
   deactivatePage
 };

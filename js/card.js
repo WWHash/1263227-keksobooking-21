@@ -9,7 +9,7 @@ const HousingType = {
   PALACE: `Дворец`
 };
 
-const definitionType = function (type) {
+const getDefinitionType = (type) => {
   let housingType;
   switch (type) {
     case window.util.OffersType.FLAT:
@@ -28,10 +28,10 @@ const definitionType = function (type) {
   return housingType;
 };
 
-const getCardPhotos = function (photosElement, photos) {
+const getCardPhotos = (photosElement, photos) => {
   const imgClone = photosElement.querySelector(`img`);
   if (photos && photos.length > 0) {
-    photos.forEach(function (photo) {
+    photos.forEach((photo) => {
       const img = imgClone.cloneNode(true);
       img.src = photo;
       photosElement.appendChild(img);
@@ -42,9 +42,9 @@ const getCardPhotos = function (photosElement, photos) {
   }
 };
 
-const getFeaturesList = function (featureElement, features) {
+const getFeaturesList = (featureElement, features) => {
   if (features && features.length > 0) {
-    features.forEach(function (feature) {
+    features.forEach((feature) => {
       featureElement.querySelector(`.popup__feature--${feature}`).classList.remove(HIDDEN);
     });
   } else {
@@ -52,7 +52,7 @@ const getFeaturesList = function (featureElement, features) {
   }
 };
 
-const fillTextContent = function (element, textContent) {
+const fillTextContent = (element, textContent) => {
   if (textContent) {
     element.textContent = textContent;
   } else {
@@ -60,7 +60,7 @@ const fillTextContent = function (element, textContent) {
   }
 };
 
-const fillAvatarSrc = function (element, src) {
+const fillAvatarSrc = (element, src) => {
   if (src) {
     element.src = src;
   } else {
@@ -68,7 +68,7 @@ const fillAvatarSrc = function (element, src) {
   }
 };
 
-const createCard = function (cardData) {
+const createCard = (cardData) => {
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
   const card = cardTemplate.cloneNode(true);
   const cardTitle = card.querySelector(`.popup__title`);
@@ -85,7 +85,7 @@ const createCard = function (cardData) {
   fillTextContent(cardTitle, cardData.offer.title);
   fillTextContent(cardAddress, cardData.offer.address);
   fillTextContent(cardPrice, `${cardData.offer.price} р/ночь`);
-  fillTextContent(cardType, definitionType(cardData.offer.type));
+  fillTextContent(cardType, getDefinitionType(cardData.offer.type));
   fillTextContent(cardCapacity, `${cardData.offer.rooms} комнаты для ${cardData.offer.guests} гостей`);
   fillTextContent(cardTime, `Заезд после ${cardData.offer.checkin} выезд до ${cardData.offer.checkout}`);
   getFeaturesList(cardFeatures, cardData.offer.features);
@@ -95,22 +95,22 @@ const createCard = function (cardData) {
   return card;
 };
 
-const renderCard = function (cardData) {
-  closeCard();
+const render = (cardData) => {
+  close();
   const card = createCard(cardData);
-  const map = window.map.getMapElement();
+  const map = window.map.getElement();
   const mapFilterContainer = map.querySelector(`.map__filters-container`);
   map.insertBefore(card, mapFilterContainer);
 
   const closeBtn = card.querySelector(`.popup__close`);
-  closeBtn.addEventListener(`click`, function (evt) {
+  closeBtn.addEventListener(`click`, (evt) => {
     if (evt.button === 0) {
-      closeCard();
+      close();
     }
   });
 };
 
-const closeCard = function () {
+const close = () => {
   const card = document.querySelector(`.map__card`);
   if (card) {
     const pinActive = document.querySelector(`.map__pin--active`);
@@ -119,16 +119,16 @@ const closeCard = function () {
   }
 };
 
-const onPopupEscPress = function (evt) {
+const onPopupEscPress = (evt) => {
   if (evt.key === `Escape`) {
     evt.preventDefault();
-    closeCard();
+    close();
   }
 };
 
 document.addEventListener(`keydown`, onPopupEscPress);
 
 window.card = {
-  renderCard,
-  closeCard
+  render,
+  close
 };

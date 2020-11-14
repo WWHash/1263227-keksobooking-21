@@ -5,7 +5,7 @@ const PIN_WIDTH = 50;
 const PIN_HEIGHT = 70;
 const mapPins = document.querySelector(`.map__pins`);
 
-const renderPin = function (pin) {
+const renderPin = (pin) => {
   const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
   const pinElement = pinTemplate.cloneNode(true);
   pinElement.setAttribute(`style`, `left: ${pin.location.x - (PIN_WIDTH / 2)}px ; top: ${pin.location.y - PIN_HEIGHT}px`);
@@ -13,21 +13,21 @@ const renderPin = function (pin) {
   img.src = pin.author.avatar;
   img.alt = pin.offer.title;
 
-  pinElement.addEventListener(`click`, function () {
-    window.card.renderCard(pin);
+  pinElement.addEventListener(`click`, () => {
+    window.card.render(pin);
     pinElement.classList.add(`map__pin--active`);
   });
 
-  pinElement.addEventListener(`keydown`, function (evt) {
+  pinElement.addEventListener(`keydown`, (evt) => {
     if (evt.key === `Enter`) {
-      window.card.renderCard(pin);
+      window.card.render(pin);
     }
   });
 
   return pinElement;
 };
 
-const drawPins = function (collection) {
+const drawPins = (collection) => {
   deletePins();
   const fragment = document.createDocumentFragment();
   const takeNumber = Math.min(MAX_PIN_COUNT, collection.length);
@@ -37,7 +37,7 @@ const drawPins = function (collection) {
   mapPins.appendChild(fragment);
 };
 
-const deletePins = function () {
+const deletePins = () => {
   const pins = document.querySelectorAll(`.map__pin`);
   for (let i = 1; i < pins.length; i++) {
     const pin = pins[i];

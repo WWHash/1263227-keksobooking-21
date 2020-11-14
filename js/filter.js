@@ -18,7 +18,7 @@ const filterRooms = filters.querySelector(`#housing-rooms`);
 const filterGuests = filters.querySelector(`#housing-guests`);
 const filterFeatures = filters.querySelectorAll(`input`);
 
-const comparePrice = function (value, price) {
+const comparePrice = (value, price) => {
   switch (value) {
     case priceRange.ANY:
       return true;
@@ -33,7 +33,7 @@ const comparePrice = function (value, price) {
   }
 };
 
-const compareInput = function (offerFeatures) {
+const compareInput = (offerFeatures) => {
   for (let i = 0; i < filterFeatures.length; i++) {
     if (filterFeatures[i].checked) {
       if (!offerFeatures.includes(filterFeatures[i].value)) {
@@ -44,11 +44,11 @@ const compareInput = function (offerFeatures) {
   return true;
 };
 
-const compareValues = function (filterValue, offerValue) {
+const compareValues = (filterValue, offerValue) => {
   return `${offerValue}` === filterValue || filterValue === `any`;
 };
 
-const onFilterFormChange = function () {
+const onFilterFormChange = () => {
   const originalOffers = window.map.getOriginalOffers();
   const filteredOffers = [];
   for (const offer of originalOffers) {
@@ -64,7 +64,7 @@ const onFilterFormChange = function () {
     }
   }
 
-  window.card.closeCard();
+  window.card.close();
   window.pin.drawPins(filteredOffers);
 };
 
